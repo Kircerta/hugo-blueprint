@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://kircerta.github.io/hugo-blueprint/sitemap.xml
