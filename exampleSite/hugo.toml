@@ -1,0 +1,121 @@
+baseURL = "https://kircerta.github.io/hugo-blueprint/"
+title = "Blueprint"
+theme = "hugo-blueprint"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+enableRobotsTXT = true
+disableThemeToggle = true
+defaultTheme = "dark"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[pagination]
+  pagerSize = 6
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[params]
+  env = "production"
+  author = "Zixiang Zhang"
+  description = "Example site for Hugo Blueprint."
+  displayFullLangName = true
+  ShowReadingTime = true
+  ShowToc = true
+  TocOpen = false
+  ShowBreadCrumbs = true
+  ShowPostNavLinks = true
+  ShowCodeCopyButtons = true
+  mainSections = ["posts"]
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/Kircerta/hugo-blueprint"
+
+  [params.blueprint]
+    homeKicker = "BLUEPRINT BLOG"
+    articlePrefix = "ARTICLE"
+    entryCta = "READ ARTICLE"
+    documentLabel = "ARTICLE"
+    darkLabel = "BLUEPRINT DARK"
+    lightLabel = "BLUEPRINT LIGHT"
+
+[languages]
+  [languages.en]
+    label = "EN"
+    locale = "en-US"
+    contentDir = "content_en"
+    weight = 1
+    title = "Blueprint"
+
+    [languages.en.params]
+      description = "Example site for Hugo Blueprint."
+
+    [languages.en.params.homeInfoParams]
+      Title = "Blueprint"
+      Content = "A compact technical writing surface for research notes, project logs, and long-form documentation."
+
+    [[languages.en.menu.main]]
+      identifier = "about"
+      name = "About"
+      url = "/about/"
+      weight = 10
+    [[languages.en.menu.main]]
+      identifier = "archives"
+      name = "Archives"
+      url = "/archives/"
+      weight = 20
+    [[languages.en.menu.main]]
+      identifier = "search"
+      name = "Search"
+      url = "/search/"
+      weight = 30
+    [[languages.en.menu.main]]
+      identifier = "tags"
+      name = "Tags"
+      url = "/tags/"
+      weight = 40
+
+  [languages.zh]
+    label = "中文"
+    locale = "zh-CN"
+    contentDir = "content_zh"
+    weight = 2
+    title = "Blueprint"
+
+    [languages.zh.params]
+      description = "Hugo Blueprint 示例站。"
+
+    [languages.zh.params.homeInfoParams]
+      Title = "Blueprint"
+      Content = "面向研究笔记、项目日志和长文档的紧凑技术写作界面。"
+
+    [[languages.zh.menu.main]]
+      identifier = "about"
+      name = "关于"
+      url = "/about/"
+      weight = 10
+    [[languages.zh.menu.main]]
+      identifier = "archives"
+      name = "归档"
+      url = "/archives/"
+      weight = 20
+    [[languages.zh.menu.main]]
+      identifier = "search"
+      name = "搜索"
+      url = "/search/"
+      weight = 30
+    [[languages.zh.menu.main]]
+      identifier = "tags"
+      name = "标签"
+      url = "/tags/"
+      weight = 40
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

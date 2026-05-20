@@ -1,0 +1,11 @@
+.DS_Store
+.hugo_build.lock
+/public/
+/resources/_gen/
+/exampleSite/public/
+/exampleSite/resources/_gen/
+/exampleSite/themes/
+node_modules/
+.vercel/
+.vercel-bin/
+.vercel

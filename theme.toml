@@ -1,0 +1,41 @@
+name = "Blueprint"
+license = "MIT"
+licenselink = "https://github.com/Kircerta/hugo-blueprint/blob/main/LICENSE"
+description = "A PaperMod-derived Hugo theme for dense technical blogs, project logs, and research notes."
+homepage = "https://github.com/Kircerta/hugo-blueprint"
+demosite = "https://kircerta.github.io/hugo-blueprint/"
+tags = [
+  "responsive",
+  "blog",
+  "technical",
+  "minimal",
+  "dark",
+  "light",
+  "search",
+  "multilingual"
+]
+features = [
+  "responsive",
+  "blog",
+  "technical-writing",
+  "table-of-contents",
+  "floating-toc",
+  "archive",
+  "search",
+  "taxonomy",
+  "social-icons",
+  "syntax-highlighting",
+  "theme-mode-toggle",
+  "multilingual"
+]
+min_version = "0.158.0"
+
+[author]
+  name = "Zixiang Zhang"
+  homepage = "https://zixiangzhang.com"
+
+[original]
+  name = "PaperMod"
+  author = "Aditya Telange"
+  homepage = "https://github.com/adityatelange/hugo-PaperMod"
+  repo = "https://github.com/adityatelange/hugo-PaperMod"

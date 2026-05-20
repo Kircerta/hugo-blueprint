@@ -1,0 +1,21 @@
+{{- $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content -}}
+  {{- $has_headers := ge (len $headers) 1 -}}
+  {{- if $has_headers -}}
+  <details id="toc" class="toc bp-toc brutal-card">
+    <summary class="bp-toc-head" style="cursor: pointer; list-style: none;">
+      <div class="bp-toc-header-left gap-3" style="display: flex; align-items: center;">
+        <span class="bp-toc-title">{{- i18n "toc" | default "Table of Contents" -}}</span>
+        <span class="bp-toc-kicker font-mono-tech" style="margin-left:auto;">[TOC]</span>
+      </div>
+      <div class="bp-toc-indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </div>
+    </summary>
+    <div class="bp-toc-inner">
+      {{- .TableOfContents -}}
+    </div>
+  </details>
+  {{- end -}}
