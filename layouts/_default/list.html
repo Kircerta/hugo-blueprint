@@ -1,0 +1,140 @@
+{{- define "main" }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }}
+
+{{- $pages := union .RegularPages .Sections }}
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- end }}
+{{- $paginator := .Paginate $pages }}
+{{- $blueprint := site.Params.blueprint | default dict }}
+{{- $homeKicker := $blueprint.homeKicker | default "BLUEPRINT BLOG" }}
+{{- $articlePrefix := $blueprint.articlePrefix | default "ARTICLE" }}
+{{- $entryCta := $blueprint.entryCta | default "READ ARTICLE" }}
+
+<div class="bp-list-shell">
+  {{- if .IsHome }}
+  {{- $home := site.Params.homeInfoParams }}
+  <section class="bp-hero-panel">
+    <div class="bp-hero-kicker font-mono-tech">{{ $homeKicker }}</div>
+    {{- if $home }}
+    <h1 class="bp-hero-title">{{ partial "markdownify_blank_a.html" $home.Title }}</h1>
+    <div class="bp-hero-subtitle">{{ partial "markdownify_blank_a.html" $home.Content }}</div>
+    <div class="bp-hero-social">
+      {{ partial "social_icons.html" (dict "align" $home.AlignSocialIconsTo) }}
+    </div>
+    {{- else }}
+    <h1 class="bp-hero-title">{{ .Site.Title }}</h1>
+    <p class="bp-hero-subtitle">A matrix-style reading surface for research notes, dev logs, and technical essays.</p>
+    {{- end }}
+  </section>
+  {{- else if .Title }}
+  <header class="page-header bp-page-header">
+    {{- partial "breadcrumbs.html" . }}
+    <h1>{{ .Site.Params.pageHeader }}{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">{{ partial "markdownify_blank_a.html" .Description }}</div>
+    {{- end }}
+  </header>
+  {{- end }}
+
+  {{- if .Content }}
+  <section class="bp-content-panel">
+    <div class="post-content">
+      {{- if not (.Param "disableAnchoredHeadings") }}
+      {{- partial "anchored_headings.html" .Content -}}
+      {{- else }}
+      {{ .Content }}
+      {{ end }}
+    </div>
+  </section>
+  {{- end }}
+
+  <section class="bp-card-grid">
+    {{- range $index, $page := $paginator.Pages }}
+    <article class="post-entry bp-entry-card brutal-card">
+      <div class="bp-entry-top font-mono-tech">
+        <span>{{ printf "%s %02d" $articlePrefix (add $index 1) }}</span>
+        <span>{{ .Date | time.Format "2006-01-02" }}</span>
+      </div>
+
+      {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" false) }}
+
+      <header class="entry-header">
+        <h2 class="entry-hint-parent">
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          {{- if .Draft }}
+          <span class="entry-hint" title="Draft">...</span>
+          {{- end }}
+        </h2>
+      </header>
+
+      <div class='entry-content{{ if (eq (.Param "hideSummary") true) }} is-empty{{ end }}'>
+        {{- if (ne (.Param "hideSummary") true) }}
+        <p>{{ .Summary | plainify }}{{ if .Truncated }}{{ i18n "ReadMore" }}{{ end }}</p>
+        {{- else }}
+        <p>&nbsp;</p>
+        {{- end }}
+      </div>
+
+      {{- if not (.Param "hideMeta") }}
+      <footer class="entry-footer">
+        {{- partial "post_meta.html" . -}}
+      </footer>
+      {{- end }}
+
+      {{- $tags := .Params.tags | default (slice) }}
+      <div class='entry-tags-wrap{{ if not $tags }} is-empty{{ end }}'>
+        <div class="entry-tags">
+          {{- range $idx, $tagName := $tags }}
+          {{- if lt $idx 3 }}
+          <a href='{{ printf "%stags/%s/" $.Site.Home.RelPermalink ($tagName | urlize) }}' class="entry-tag">#{{
+            $tagName }}</a>
+          {{- end }}
+          {{- end }}
+          {{- if gt (len $tags) 3 }}
+          <span class="entry-tag entry-tag-more">...</span>
+          {{- end }}
+        </div>
+      </div>
+
+      <div class="bp-entry-cta font-mono-tech">
+        <span>{{ $entryCta }}</span>
+        <span class="bp-entry-arrow">-></span>
+      </div>
+
+      <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
+    </article>
+    {{- end }}
+  </section>
+
+  {{- if gt $paginator.TotalPages 1 }}
+  <footer class="page-footer bp-page-footer">
+    <nav class="pagination">
+      {{- if $paginator.HasPrev }}
+      <a class="prev" href="{{ $paginator.Prev.URL }}">
+        «&nbsp;{{ i18n "prev_page" }}&nbsp;
+        {{- if (.Param "ShowPageNums") }}
+        {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
+        {{- end }}
+      </a>
+      {{- end }}
+      {{- if $paginator.HasNext }}
+      <a class="next" href="{{ $paginator.Next.URL }}">
+        {{- i18n "next_page" }}&nbsp;
+        {{- if (.Param "ShowPageNums") }}
+        {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
+        {{- end }}&nbsp;»
+      </a>
+      {{- end }}
+    </nav>
+  </footer>
+  {{- end }}
+</div>
+
+{{- end }}
+
+{{- end }}{{/* end main */ -}}

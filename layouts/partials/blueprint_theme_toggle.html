@@ -1,0 +1,53 @@
+{{- $blueprint := site.Params.blueprint | default dict -}}
+{{- $darkLabel := $blueprint.darkLabel | default "BLUEPRINT DARK" -}}
+{{- $lightLabel := $blueprint.lightLabel | default "BLUEPRINT LIGHT" -}}
+<button id="bp-mode-toggle" class="bp-mode-toggle" type="button" aria-label="Switch visual mode" aria-pressed="false">
+  <span class="bp-mode-kicker">MODE</span>
+  <span class="bp-mode-value" id="bp-mode-value">{{ $darkLabel }}</span>
+</button>
+
+<script>
+  (function () {
+    var storageKey = "bp-theme-mode";
+    var labels = {
+      dark: {{ $darkLabel | jsonify }},
+      light: {{ $lightLabel | jsonify }}
+    };
+    var root = document.documentElement;
+    var btn = document.getElementById("bp-mode-toggle");
+    var valueNode = document.getElementById("bp-mode-value");
+
+    function applyMode(mode) {
+      var resolved = mode === "light" ? "light" : "dark";
+      if (resolved === "light") {
+        root.classList.add("bp-light-mode");
+      } else {
+        root.classList.remove("bp-light-mode");
+      }
+      try {
+        localStorage.setItem(storageKey, resolved);
+      } catch (e) { }
+      if (valueNode) valueNode.textContent = resolved === "light" ? labels.light : labels.dark;
+      if (btn) {
+        btn.setAttribute("data-mode", resolved);
+        btn.setAttribute("aria-pressed", resolved === "light" ? "true" : "false");
+      }
+    }
+
+    function currentMode() {
+      try {
+        return localStorage.getItem(storageKey) || "dark";
+      } catch (e) {
+        return "dark";
+      }
+    }
+
+    applyMode(currentMode());
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var now = (btn.getAttribute("data-mode") || "dark");
+      var next = now === "dark" ? "light" : "dark";
+      applyMode(next);
+    });
+  })();
+</script>

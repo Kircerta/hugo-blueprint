@@ -1,0 +1,40 @@
+{{- if lt hugo.Version "0.158.0" }}
+{{- errorf "=> hugo v0.158.0 or greater is required for Hugo Blueprint to build " }}
+{{- end -}}
+
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang }}" dir="{{ .Language.Direction | default "auto" }}">
+
+<head>
+    <script>
+        (function () {
+            try {
+                var mode = localStorage.getItem("bp-theme-mode");
+                if (mode === "light") {
+                    document.documentElement.classList.add("bp-light-mode");
+                } else {
+                    document.documentElement.classList.remove("bp-light-mode");
+                }
+            } catch (e) {
+                document.documentElement.classList.remove("bp-light-mode");
+            }
+        })();
+    </script>
+    {{- partial "head.html" . }}
+
+    {{ if .Param "math" }}
+      {{ partialCached "math.html" . }}
+    {{ end }}
+
+</head>
+
+<body class="bp-shell{{ if (or (ne .Kind `page`) (eq .Layout `archives`) (eq .Layout `search`)) }} list{{ end }}" id="top">
+    {{- partialCached "header.html" . .Page -}}
+    <main class="main">
+        {{- block "main" . }}{{ end }}
+    </main>
+    {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+    {{ partial "blueprint_theme_toggle.html" . }}
+</body>
+
+</html>
